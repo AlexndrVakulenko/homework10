@@ -1,0 +1,56 @@
+---
+- name: Log_service
+  hosts: ubuntutest
+  become: true
+
+  tasks:
+  - name: Copy_watchlog
+    copy:
+      src: ./watchlog/watchlog
+      dest: /etc/default/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+
+  - name: Copy_watchlog.log
+    copy:
+      src: ./watchlog/watchlog.log
+      dest: /var/log/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+  
+  - name: Copy_script
+    copy:
+      src: ./watchlog/watchlog.sh
+      dest: /opt/
+      remote_src: no
+      mode: 0744
+      owner: root
+      group: root
+
+  -  name: Copy_service
+     copy:
+      src: ./watchlog/watchlog.service
+      dest: /etc/systemd/system/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+ 
+  -  name: Copy_timer
+     copy:
+      src: ./watchlog/watchlog.timer
+      dest: /etc/systemd/system/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+
+  - name: Starting_service
+    ansible.builtin.shell: sudo systemctl start watchlog.service
+
+  - name: Starting_timer
+    ansible.builtin.shell: sudo systemctl start watchlog.timer
