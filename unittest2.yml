@@ -1,0 +1,56 @@
+---
+- name: work_with_script
+  hosts: ubuntutest
+  become: true
+
+  tasks:
+
+  - name: Add_repository_for_php
+    ansible.builtin.apt_repository:
+      repo: ppa:ondrej/php
+
+  - name: update
+    ansible.builtin.apt:
+      update_cache: yes
+
+  - name: Install_php
+    ansible.builtin.apt:
+      pkg:
+      - php
+      - php-cgi
+      - php-cli
+      - libapache2-mod-php
+
+  - name: Install_packages
+    ansible.builtin.apt:
+      pkg:
+      - spawn-fcgi
+      - apache2
+      - libapache2-mod-fcgid  
+      
+  - name: Copy_fcgi.conf
+    copy:
+      src: ./spawn_script/fcgi.conf
+      dest: /etc/spawn-fcgi/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+
+  - name: Copy_fcgi.service
+    copy:
+      src: ./spawn_script/spawn-fcgi.service
+      dest: /etc/systemd/system/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root 
+    
+  - name: Copy_script
+    copy:
+      src: ./spawn_script/spawn-fcgi.sh
+      dest: /usr/bin/spawn-fcgi
+      remote_src: no
+      mode: 0777
+      owner: root
+      group: root 
