@@ -8,3 +8,4 @@ Ansible workbook unittest1.yml. Необходимые файлы копирую
 
 - Установить spawn-fcgi и создать unit-файл etc/sysconfig ----> Ansible workbook unittest2.yml Необходимые файлы копируются из папки spawn_script. Пакеты php не устанавливались напрямую. Решилось добавлением репозитория. скриншот 02
 
+- Доработать unit-файл Nginx (nginx.service) для запуска нескольких инстансов сервера с разными конфигурационными файлами одновременно ----> Ansible workbook unittest3.yml, папка two_nginx
