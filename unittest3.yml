@@ -1,0 +1,41 @@
+---
+- name: two_nginx
+  hosts: ubuntutest
+  become: true
+
+  tasks:
+
+  - name: update
+    apt:
+      update_cache=yes
+  
+  - name: NGINX | Install NGINX
+    apt:
+      name: nginx
+    
+  - name: Copy_nginx@.service
+    copy:
+      src: ./two_nginx/nginx@.service
+      dest: /etc/systemd/system/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root 
+
+  - name: Copy_config1
+    copy:
+      src: ./two_nginx/nginx-first.conf
+      dest: /etc/nginx/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root 
+
+  - name: Copy_config2
+    copy:
+      src: ./two_nginx/nginx-second.conf
+      dest: /etc/nginx/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root 
